@@ -1,0 +1,80 @@
+\documentclass[a4paper,12pt, english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{ulem}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{tabulary}
+
+
+\begin{document}
+\section*{Project 2}
+\subsubsection*{Scr\"odinger's equation for two electrons in a three-dimensional harmonic oscillator well }
+
+Our task in this project is to solve Scr\"odinger's equation for two electrons in a three-dimensional oscillator well without the repulsive Coulomb interaction. We are going to solve this equation by reformulating it in a discretized form as an eigenvalue equation to be solved with Jacobi's method. 
+\\
+The radial part of the wave function, $R(r)$, is a solution to 
+$$ -\frac{\hbar^2}{2m}(\frac{1}{r^2}\frac{d}{dr}r^2\frac{d}{dr} - \frac{l(l+1)}{r^2})R(r) + V(r)R(r) = ER(r)  $$
+\\
+In our case V(r) is the harmonic oscillator potential $\frac{1}{1}kr^2$ with $k=m\omega^2$. $E$ is the energy of the harmonic oscillator in three dimensions. The oscillator frequency is $\omega$ and the energies are
+$$ {E_n}_l = \hbar\omega(2n + l + \frac{3}{2}) $$
+with $n = 0,1,2,...$ and $l = 0,1,2,...$  \\
+When we substitute $R(r) = \frac{1}{r}u(r)$ with boundary conditions $u(0) = 0$ and $u(\infty) = 0$ and introduce dimensionless variable $\rho = \frac{1}{\alpha}r$ we can rewrite Scr\"odinger's equation as 
+$$ - \frac{d^2}{d\rho^2}u(\rho) + \rho^2u(\rho) = \lambda u(\rho) $$
+with $\alpha = \frac{\hbar^2}{mk}^1/4$ and $\lambda = \frac{2m\alpha^2}{\hbar^2}E$. \\
+Our goal is to rewrite this equation as a matrix eigenvalue problem. We use the standard expression for the second derivative $$ u'' = \frac{u(\rho + h) -2u(\rho) + u(\rho -h)}{h^2} + O(h^2) $$
+where $h$ is our step.
+With a given number of steps, $n_{steps}$, we define the step $h$ as $$h = \frac{\rho_{max}-\rho_{min}}{n_{step}}. $$
+We define an arbitrary value of $\rho$ to be $\rho_i = \rho_{min} + ih$. \\
+.....\\
+
+With these definitions the Scr/"odinger equation takes the following form $$ d_iu_i + e_{i-1}u_{i-1} + e_{i+1}u_{i+1} = \lambda u_i $$
+where $u_i$ is the unknown. We can write this equation as a matrix eigenvalue problem \\
+----
+
+
+
+We define the quantities $tan(\theta) = t = \frac{s}{c}$, with $s=sin(\theta)$ and $c = cos(\theta)$ and 
+
+$$cot(2\theta) = \tau = \frac{a_{ll}- a_{kk}}{2a_{kl}} $$ 
+Using $$cot(2\theta) = \frac{1}{2}(cot(\theta) - tan(\theta))$$ we get 
+$$\tau = \frac{1}{2}(\frac{1}{t} -t) $$
+$$2\tau = \frac{1}{t} - t \hspace{5mm} \mid *t $$
+$$t^2 + 2\tau t - 1 = 0 \Rightarrow t = -\tau \pm \sqrt{1+\tau^2} $$
+
+
+Why we should choose $t$ to be the smaller of the roots:
+When doing the Jacobi transformation, we pick out the greatest non-diagonal element and set it equal to zero.
+side 216
+When changing this element we involuntary change the other elements on the same column and and row. Ideally these elements would stay zero. We want the change in these elements to be as small as possible. 
+
+Largest element:
+$$ {b_k}_l = ({a_k}_k - {a_l}_l) cos(\theta) + {a_k}_l(cos(\theta)^2 - sin(\theta)^2$$
+
+Change in corresponding row and column:
+$$ {b_i}_k = {a_i}_kcos(\theta) - {a_i}_lsin(\theta) $$
+$$ {b_i}_l = {a_i}_lcos(\theta) + {a_i}_ksin(\theta) $$
+  
+We see that the we get the lowest change when $cos(\theta) \rightarrow 1$ and $sin(\theta \rightarrow 0$.
+
+Our goal is therefore to make $ \mid tan(\theta) \mid  = \mid \frac{sin(\theta)}{cos(\theta)} \mid$ as small as possible, and thereby make the change of the elements effected as little as possible.
+To do this we choose the smallest of the roots $tan(\theta) = t = - \tau \pm \sqrt{1+\tau^2}$
+
+For $\tau > 0$ the smallest $t$ is given by $ t = - \tau + \sqrt{1+ \tau^2}$.
+
+For $\tau < 0$ the root $ t = - \tau - \sqrt{1+ \tau^2}$ gives the smallest change.  
+  
+To avoid loss of numerical precision we rewrite
+$$\tau>0:$$
+$$(-\tau + \sqrt{1 + \tau^2}) * \frac{\tau + \sqrt{1+\tau^2}}{\tau + \sqrt{1+\tau^2}} = \frac{1}{\tau + \sqrt{1+\tau^2}} $$
+$$\tau<0:$$
+$$(-\tau - \sqrt{1 + \tau^2}) * \frac{\tau - \sqrt{1+\tau^2}}{\tau + \sqrt{1-\tau^2}} = \frac{1}{\tau - \sqrt{1+\tau^2}}$$
+
+By this we see that the largest value we will get for $\mid tan(\theta) \mid = 1$. And thus we know that the largest value for the absolute value of the angle must be $\frac{\pi}{4}$. 
+  
+\end{document}
