@@ -75,6 +75,18 @@ $$(-\tau + \sqrt{1 + \tau^2}) * \frac{\tau + \sqrt{1+\tau^2}}{\tau + \sqrt{1+\ta
 $$\tau<0:$$
 $$(-\tau - \sqrt{1 + \tau^2}) * \frac{\tau - \sqrt{1+\tau^2}}{\tau + \sqrt{1-\tau^2}} = \frac{1}{\tau - \sqrt{1+\tau^2}}$$
 
-By this we see that the largest value we will get for $\mid tan(\theta) \mid = 1$. And thus we know that the largest value for the absolute value of the angle must be $\frac{\pi}{4}$. 
+By this we see that the largest value we will get for $\mid tan(\theta) \mid = 1$. And thus we know that the largest value for the absolute value of the angle must be $\frac{\pi}{4}$. \\ 
   
+  
+In my algorithm I make a function $off-diagonal$ that takes as argument the matrix A, the index variables k and l, and the matrix dimension n. Both A and the index variables is given by address. In this function I run over the non-diagonal elements to find the biggest value of these. When having done so, I save the index for this value in the variables k and l. The function returns the maximum value. \\ 
+
+As long as the maximum value is bigger than my chosen error limit, $\epsilon = 1*10^-8$, I run my $rotation$ function. This function performs the Jacobi rotation. The biggest off-diagonal value is set to zero, and the belonging row and column is affected by the rotation. \\
+
+I plead satisfied when my biggest off-diagonal matrix element is smaller than $\epsilon$. I then have my eigenvalues on the diagonal of the matrix A. \\
+
+The eigenvalues is not ordered after value. So to find my three lowest eigenvalues I make an armadillo vector with the eigenvalues, and use the functionality sort to get them into order. I then print the first three values of the matrix. \\
+
+Choice of $rho_{max}$:
+Depends on the width of the wavepacket. Wide wavepacket -- large rho to get the relevant data. Dependent on the frequency, potential $V = m \omega ^ 2$. The frequency decides the width of the curve, and thus our value of rho.   
+ 
 \end{document}
