@@ -33,10 +33,10 @@ With a given number of steps, $n_{steps}$, we define the step $h$ as $$h = \frac
 We define an arbitrary value of $\rho$ to be $\rho_i = \rho_{min} + ih$. \\
 .....\\
 
-With these definitions the Scr/"odinger equation takes the following form $$ d_iu_i + e_{i-1}u_{i-1} + e_{i+1}u_{i+1} = \lambda u_i $$
+With these definitions the Scr\"odinger equation takes the following form $$ d_iu_i + e_{i-1}u_{i-1} + e_{i+1}u_{i+1} = \lambda u_i $$
 where $u_i$ is the unknown. We can write this equation as a matrix eigenvalue problem \\
 ----
-
+\\
 
 
 We define the quantities $tan(\theta) = t = \frac{s}{c}$, with $s=sin(\theta)$ and $c = cos(\theta)$ and 
@@ -50,8 +50,8 @@ $$t^2 + 2\tau t - 1 = 0 \Rightarrow t = -\tau \pm \sqrt{1+\tau^2} $$
 
 Why we should choose $t$ to be the smaller of the roots:
 When doing the Jacobi transformation, we pick out the greatest non-diagonal element and set it equal to zero.
-side 216
-When changing this element we involuntary change the other elements on the same column and and row. Ideally these elements would stay zero. We want the change in these elements to be as small as possible. 
+(side 216)
+When changing this element we involuntary change the other elements on the same column and row. Ideally these elements would stay zero. We want the change in these elements to be as small as possible. 
 
 Largest element:
 $$ {b_k}_l = ({a_k}_k - {a_l}_l) cos(\theta) + {a_k}_l(cos(\theta)^2 - sin(\theta)^2$$
@@ -73,7 +73,7 @@ To avoid loss of numerical precision we rewrite
 $$\tau>0:$$
 $$(-\tau + \sqrt{1 + \tau^2}) * \frac{\tau + \sqrt{1+\tau^2}}{\tau + \sqrt{1+\tau^2}} = \frac{1}{\tau + \sqrt{1+\tau^2}} $$
 $$\tau<0:$$
-$$(-\tau - \sqrt{1 + \tau^2}) * \frac{\tau - \sqrt{1+\tau^2}}{\tau + \sqrt{1-\tau^2}} = \frac{1}{\tau - \sqrt{1+\tau^2}}$$
+$$(-\tau - \sqrt{1 + \tau^2}) * \frac{\tau - \sqrt{1+\tau^2}}{\tau + \sqrt{1-\tau^2}} = \frac{-1}{\-tau + \sqrt{1+\tau^2}}$$
 
 By this we see that the largest value we will get for $\mid tan(\theta) \mid = 1$. And thus we know that the largest value for the absolute value of the angle must be $\frac{\pi}{4}$. \\ 
   
@@ -86,7 +86,46 @@ I plead satisfied when my biggest off-diagonal matrix element is smaller than $\
 
 The eigenvalues is not ordered after value. So to find my three lowest eigenvalues I make an armadillo vector with the eigenvalues, and use the functionality sort to get them into order. I then print the first three values of the matrix. \\
 
-Choice of $rho_{max}$:
-Depends on the width of the wavepacket. Wide wavepacket -- large rho to get the relevant data. Dependent on the frequency, potential $V = m \omega ^ 2$. The frequency decides the width of the curve, and thus our value of rho.   
+We need about $n_{step} = 196$ to get the lowest three eigenvalues with four leading digits. At this step length we run our program $63376$ times to reach the given precision (if we decrease our epsilon our program runs more times). Behaviour as a function of the dimensionality of the matrix: goes as $n^2$. 
+
+For $n=196$: \\
+tqli: $time = 0.1132 s$ \\
+our: $time = 16.3448 s $ \\
+We are sloooow - you are faast (wanna run against me??)
  
+Subproblem c:
+For $n=196$
+KKKARI 
+ \begin{center}
+ \begin{tabular}{l |  l l l}
+$\omega_r$ &  The three lowest eigenvalues & & \\
+ 0.01 & 0.847 & 2.196 & 4.2768   \\
+ 0.5 & 2.231 & 4.171 & 6.402 \\
+1 & 4.057 & 7.908 & 11.817\\
+5 & 17.443 & 37.047 & 56.793
+\end{tabular}
+\end{center}
+
+BREMNES???? kari ....
+We checked it against a closed form solution. Turned off the coulomb interaction. $\omega_r = 5$
+Eigenvalues: $15, 35, $
+Small contribution from $ 1/ \rho)$
+
+
+
+Plotting the eigenvectors corresponding to the three lowest eigenvalues.\\
+
+\includegraphics[scale=0.5]{omega1rhomax5}
+\includegraphics[scale=0.5]{omega1rhomax15}
+
+Our choice of $\rho_{max}$ depends on the width of the wavepacket. If we have a wide wavepacket we must choose a large $\rho$ to get all the relevant data. We see that the wavepacket reduces quite quickly to zero, and thus we do not need a too large $\rho$.  
+
+The width of the wavepacket is dependent on the frequency, potential $V = m \omega ^ 2$. The frequency decides the width of the curve, and thus influences our choice of $\rho$. \\ 
+
+When you increase omega the potential increases strongly - and thus it will be much less likely that the particles will be located far from each other.  \\
+
+\includegraphics[scale=0.5]{omega5rhomax5}
+\includegraphics[scale=0.5]{omega001rhomax5}
+\includegraphics[scale=0.5]{omega001rhomax1}
+
 \end{document}
