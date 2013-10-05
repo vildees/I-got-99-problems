@@ -77,40 +77,62 @@ $$(-\tau - \sqrt{1 + \tau^2}) * \frac{\tau - \sqrt{1+\tau^2}}{\tau + \sqrt{1-\ta
 
 By this we see that the largest value we will get for $\mid tan(\theta) \mid = 1$. And thus we know that the largest value for the absolute value of the angle must be $\frac{\pi}{4}$. \\ 
   
-  
-In my algorithm I make a function $off-diagonal$ that takes as argument the matrix A, the index variables k and l, and the matrix dimension n. Both A and the index variables is given by address. In this function I run over the non-diagonal elements to find the biggest value of these. When having done so, I save the index for this value in the variables k and l. The function returns the maximum value. \\ 
+\subsubsection{Method}
+In our algorithm we make a function $off-diagonal$ that takes as argument the matrix A, the index variables k and l, and the matrix dimension n. Both A and the index variables are given by address. In this function we run over the non-diagonal elements to find the biggest value of these. When having done so, we save the index for this value in the variables k and l. The function returns the maximum value. 
 
-As long as the maximum value is bigger than my chosen error limit, $\epsilon = 1*10^-8$, I run my $rotation$ function. This function performs the Jacobi rotation. The biggest off-diagonal value is set to zero, and the belonging row and column is affected by the rotation. \\
-
-I plead satisfied when my biggest off-diagonal matrix element is smaller than $\epsilon$. I then have my eigenvalues on the diagonal of the matrix A. \\
-
-The eigenvalues is not ordered after value. So to find my three lowest eigenvalues I make an armadillo vector with the eigenvalues, and use the functionality sort to get them into order. I then print the first three values of the matrix. \\
-
-We need about $n_{step} = 196$ to get the lowest three eigenvalues with four leading digits. At this step length we run our program $63376$ times to reach the given precision (if we decrease our epsilon our program runs more times). Behaviour as a function of the dimensionality of the matrix: goes as $n^2$. 
-
-For $n=196$: \\
-tqli: $time = 0.1132 s$ \\
-our: $time = 16.3448 s $ \\
-We are sloooow - you are faast (wanna run against me??)
+As long as the maximum value is bigger than our chosen error limit, $\epsilon = 1*10^-8$, we run our $rotation$ function. This function performs the Jacobi rotation. The biggest off-diagonal value is set to zero and, as an effect of the rotation, the belonging row and column is affected as well. Our goal is to do the rotations so that all the non-diagonal elements is zero. We plead satisfied when our biggest off-diagonal matrix element is smaller than our chosen limit $\epsilon$. We then have our eigenvalues on the diagonal of the matrix.
  
-Subproblem c:
-For $n=196$
-KKKARI 
- \begin{center}
- \begin{tabular}{l |  l l l}
-$\omega_r$ &  The three lowest eigenvalues & & \\
- 0.01 & 0.847 & 2.196 & 4.2768   \\
- 0.5 & 2.231 & 4.171 & 6.402 \\
-1 & 4.057 & 7.908 & 11.817\\
-5 & 17.443 & 37.047 & 56.793
+The eigenvalues are not ordered after value. So to find our three lowest eigenvalues we make a vector with the eigenvalues, and use the functionality $sort$ to get them into order. We then print the first three values of the matrix.
+ 
+\subsubsection{Results}
+In three dimensions the eigenvalues for $l=0$ are $\lambda_0 = 3, \lambda_1 = 7, \lambda_2 = 11,...$ We want to find out how many points $n_{step}$ that is needed to get the three lowest eigenvalues with four leading digits. When running our program we see that it is first for $n_{step} = 196$ we get the wanted precision. 
+ 
+With our choice of tolerance ($\epsilon = 1*10^{-8}$) our program runs $63376$ times to reach the given precision. We see that if we decrease our $\epsilon$, the rotation must be performed more times to achieve the same precision. 
+
+Running for different $n-values$ we see that the number of Jacobi rotations needed increases as $n$ increases.
+
+\begin{center}
+\begin{tabular}{l |  l }
+n & counter \\
+10 & 112   \\
+20 & 555 \\
+30 & 1322 \\
+100 & 16178 \\
+200 & 66029 \\
 \end{tabular}
-\end{center}
+\end{center}  
+
+We see that, roughly estimated, the number of transformations needed as function of the dimensionality of the matrix goes as $n^2$. \\
+
+
+To check our results we used the armadillo function $eig\_sym$, that gives us both the eigenvalues and the eigenvector of our symmetric matrix. We find that the three lowest eigenvalues are $2.999, 6.999$ and $10.999$, which coincides with the results we found from our Jacobi method. By comparing to the analytical values for the eigenvalues, we see that we are within good precision. We see that the values have four leading digit, which we needed a $n=196$-matrix and $63376$ to reach in our Jacobi rotation program. However, the armadillo program runs much faster than our Jacobi solver. We found that for a $n=196$ matrix the armadillo program needed $0.0349 s$ to do the calculations, while our program used $16.3448 s$. We see that for small matrices the precision is low when using the Jacobi method, and for large matrices the time needed to reach a good precision is high. \\
+
+
+To study two electrons in a harmonic oscillator well which also interact via a repulsive Coulomb interaction, we used our code from subproblem (a), but changed the potential to $$V = \omega_r^2 \rho^2 + \frac{1}{\rho} $$
 
 BREMNES???? kari ....
 We checked it against a closed form solution. Turned off the coulomb interaction. $\omega_r = 5$
 Eigenvalues: $15, 35, $
 Small contribution from $ 1/ \rho)$
 
+
+When running for $n=196$ and $rho_max = 5$, as before, we found the lowest three eigenvalues for different $\omega$
+
+ 
+\begin{center}
+\begin{tabular}{l |  l l l}
+$\omega_r$ & The three lowest eigenvalues \\
+0.01 & 0.847 & 2.196 & 4.2768   \\
+0.5 & 2.231 & 4.171 & 6.402 \\
+1 & 4.057 & 7.908 & 11.817\\
+5 & 17.443 & 37.047 & 56.793
+\end{tabular}
+\end{center}
+
+
+
+
+To find the eigenvalues and eigenfunctions of the two-electron wavefunction we used, as for the one-electron case, the armadillo function $eig_sym$. We passed the eigenvectors that corresponds to the three lowest eigenvalues to a file $data.dat$ and made a python script that read out and plotted these vectors against its index. To make it easy to change variables we compiled, ran and gave the values of $n$, $\omega$ and $\rho$ from within our python script.    
 
 
 Plotting the eigenvectors corresponding to the three lowest eigenvalues.\\
